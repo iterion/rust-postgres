@@ -58,6 +58,8 @@ pub fn __to_sql_checked<T>(v: &T, ty: &Type, out: &mut Write, ctx: &SessionInfo)
 mod bit_vec;
 #[cfg(feature = "uuid")]
 mod uuid;
+#[cfg(feature = "rust-gmp")]
+mod mpf;
 #[cfg(feature = "time")]
 mod time;
 mod slice;

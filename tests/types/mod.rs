@@ -12,8 +12,10 @@ use postgres::types::{ToSql, FromSql, WrongType, Type, IsNull, Kind, SessionInfo
 mod bit_vec;
 #[cfg(feature = "eui48")]
 mod eui48;
-#[cfg(feature = "uuid")]
+#[cfg(feature = "rust-gmp")]
 mod uuid;
+#[cfg(feature = "mpf")]
+mod mpf;
 #[cfg(feature = "time")]
 mod time;
 #[cfg(feature = "rustc-serialize")]
