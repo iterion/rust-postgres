@@ -12,9 +12,9 @@ use postgres::types::{ToSql, FromSql, WrongType, Type, IsNull, Kind, SessionInfo
 mod bit_vec;
 #[cfg(feature = "eui48")]
 mod eui48;
-#[cfg(feature = "rust-gmp")]
+#[cfg(feature = "uuid")]
 mod uuid;
-#[cfg(feature = "mpf")]
+#[cfg(feature = "rust-gmp")]
 mod mpf;
 #[cfg(feature = "time")]
 mod time;
@@ -28,10 +28,15 @@ mod chrono;
 fn test_type<T: PartialEq+FromSql+ToSql, S: fmt::Display>(sql_type: &str, checks: &[(T, S)]) {
     let conn = or_panic!(Connection::connect("postgres://postgres@localhost", SslMode::None));
     for &(ref val, ref repr) in checks.iter() {
+        println!("SELECT {}::{}", *repr, sql_type);
         let stmt = or_panic!(conn.prepare(&*format!("SELECT {}::{}", *repr, sql_type)));
+        println!("a {}", *repr);
         let result = or_panic!(stmt.query(&[])).iter().next().unwrap().get(0);
+        println!("b {}", *repr);
         assert_eq!(val, &result);
+        println!("c {}", *repr);
 
+        println!("SELECT $1::{}", sql_type);
         let stmt = or_panic!(conn.prepare(&*format!("SELECT $1::{}", sql_type)));
         let result = or_panic!(stmt.query(&[val])).iter().next().unwrap().get(0);
         assert_eq!(val, &result);
